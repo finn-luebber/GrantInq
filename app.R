@@ -78,9 +78,10 @@ default_inputs <- data.frame(
 )
 
 # tooltips/popups
+affiliations_tooltip <- "1: Department of Psychiatry and Psychotherapy, University of Lübeck, Germany <br><br> 2: Department of Rheumatology and Clinical Immunology, University of Lübeck, Germany <br><br> 3: Open Science Initiative, University of Lübeck, Germany <br><br> 4: Diversity, Inclusion, and Chance Equity Commission, German Psychological Society <br><br> 5: Academy of Fine Arts, Munich, Germany <br><br> 6: Philosophy and Diversity, German Philosophical Society <br><br> 7: Behavioral Law & Economics, Max Planck Institute for Research on Collective Goods, Bonn, Germany <br><br> 8: Department of Psychology, Humboldt University, Berlin, Germany"
 tutorial_basic_tooltip <- "This will open a tutorial to learn about the app's functionalities"
 tutorial_bias_tooltip <- "This will open a tutorial to learn how to model accuracy and bias"
-scenarios_tooltip <- "Click here to view scenarios described in the commentary"
+scenarios_tooltip <- "Click here to view example scenarios for different funding schemes"
 
 reset_general_tooltip <- "Click here to reset all parameters to default"
 
@@ -430,14 +431,26 @@ titlePanel(
 
 
 # authors
-h4("Finn Luebber,
-Sören Krach,
-Marina Martinez Mateo,
-Frieder Paulus,
-Lena Rademacher, 
-Rima-Maria Rahal,
-Jule Specht
-"),
+
+div( helpText(style = 'font-size:18px; color: #000000', tags$span(
+  HTML(paste0("Finn Luebber", tags$sup("1,2,3"), ",  
+  Sören Krach",  tags$sup("1,3,4"), ", 
+  Marina Martinez Mateo",  tags$sup("5,6"), ", 
+  Frieder M. Paulus",  tags$sup("1,3"), ", 
+  Lena Rademacher",  tags$sup("1,3"), ",   
+  Rima-Maria Rahal",  tags$sup("7"), ", 
+  Jule Specht",  tags$sup("8")  
+              )), 
+  tags$i(
+  icon("fas fa-info-circle"))))) %>% 
+  bsPopover("Affiliations",
+            affiliations_tooltip,
+            "bottom",
+            "hover",
+            titlecolor = "white",
+            titlesize = "16px",
+            contentsize = "14px",
+            html = T),
 
 
 ###### General Settings ######
@@ -508,9 +521,9 @@ fluidRow(
                                                          contentsize = "14px"),
                                              # / tutorial
                                              
-                                             div( helpText(style = 'font-size:18px; font-weight:bold; color: #FFF', tags$span("Example Funding Scenarios", tags$i(
+                                             div( helpText(style = 'font-size:18px; font-weight:bold; color: #FFF', tags$span("Examplary Funding Scenarios", tags$i(
                                                icon("fas fa-info-circle"))))) %>% 
-                                               bsPopover("Example Funding Scenarios from Commentary",
+                                               bsPopover("Examplary Funding Scenarios",
                                                          scenarios_tooltip,
                                                          "right",
                                                          "hover",
@@ -2428,6 +2441,7 @@ server <- function(input, output, session) {
   
   ####### Parameters for scenarios ####### 
   
+  
   # define parameters for scenarios
   observeEvent(input$scenarios, {
     #R01
@@ -2663,6 +2677,8 @@ server <- function(input, output, session) {
     } 
     
   })
+  
+  
   
   # reset all parameters to default
   observeEvent(input$reset_general, {
